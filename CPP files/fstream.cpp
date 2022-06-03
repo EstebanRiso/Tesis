@@ -75,10 +75,14 @@ int main(int argc, char * argv[]){
 	}
 	
 	/* Transformacion a ktree */
+	bool dado;
 	
 	uint max_level = floor(log(cantNode)/log(K)); 
 	if(floor(log(cantNode)/log(K))==(log(cantNode)/log(K))) {
 		max_level=max_level-1;
+		dado=true;
+	}else{
+		dado=false;
 	}
 	
 	uint nodes_read=0;
@@ -100,8 +104,8 @@ int main(int argc, char * argv[]){
 	}
 	cout<<"TODAVIA NO HAY ERROR"<<endl;
 	
-	MREP * rep = compactCreateKTree(xedges, yedges, cantNode,cantEdge,max_level);
-
+	MREP * rep = compactCreateKTree(xedges, yedges, cantNode,cantEdge,max_level,dado);
+	
     uint *datos=rep->btl->data;
 	uint *rs=rep->btl->Rs;
     uint integers=rep->btl->integers;

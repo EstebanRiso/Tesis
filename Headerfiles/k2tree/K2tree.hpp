@@ -42,7 +42,7 @@ class K2Tree{
     }
 
     int getHeight(){
-      return tl->maxLevel+1;
+      return tl->level;
     }
 
     bool checklink(uint i, uint j){

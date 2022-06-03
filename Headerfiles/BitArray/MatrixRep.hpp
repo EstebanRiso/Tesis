@@ -23,6 +23,7 @@ typedef struct matrixRep{
     uint * basey; // 4 
     int iniq; // 4 
     int finq; // 4
+	int level;
 }MREP;
 
 typedef struct edgeinfo{
@@ -188,11 +189,16 @@ uint exp_pow(uint base, uint pow){
 
 
 
-MREP * compactCreateKTree(uint * xedges, uint *yedges, uint numberOfNodes,ulong numberOfEdges, uint maxl){
+MREP * compactCreateKTree(uint * xedges, uint *yedges, uint numberOfNodes,ulong numberOfEdges, uint maxl,bool dado){
 
 	MREP * rep;
 	rep = (MREP *) malloc(sizeof(struct matrixRep));
 	rep->maxLevel = maxl;
+	
+	if(dado==true){rep->level=maxl+1;}
+	else{rep->level=maxl;}
+
+
 	rep->numberOfNodes = numberOfNodes;
 	rep->numberOfEdges = numberOfEdges;
 	rep->div_level_table=0;
@@ -385,9 +391,11 @@ void saveRepresentation2(MREP * rep, char * basename){
 	s=rep->btl->s;
 	n=rep->btl_len;
 
+	
 	fwrite (&(rep->btl_len),sizeof(uint),1,ft);
 	fwrite (&(rep->bt_len),sizeof(uint),1,ft);
 	fwrite (&(rep->btl->factor),sizeof(uint),1,ft);
+	fwrite (&(rep->level),sizeof(uint),1,ft);
 
 	fclose(ft);
 	free(filename);
@@ -485,6 +493,7 @@ MREP * loadRepresentation(char * basename){
 	rep->btl->b=32;    
 	uint b=rep->btl->b;                      
 	fread (&(rep->btl->factor),sizeof(uint),1,ft);
+	fread (&(rep->level),sizeof(uint),1,ft);
 	rep->btl->s=b*rep->btl->factor;
 	uint s=rep->btl->s;
     rep->btl->n = rep->btl_len;
@@ -495,6 +504,7 @@ MREP * loadRepresentation(char * basename){
 	rep->btl->owner = 1;
 	rep->btl->Rs=(uint*)malloc(sizeof(uint)*(n/s+1));
 	fread (rep->btl->Rs,sizeof(uint),n/s+1,ft);
+	
 
 	rep->info = (uint *)malloc(sizeof(uint)*MAX_INFO);
 	rep->element = (uint *)malloc(sizeof(uint)*MAX_INFO);	

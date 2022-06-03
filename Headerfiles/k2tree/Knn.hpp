@@ -38,7 +38,7 @@ class KNN{
            int dist=0;
         
            if(Cand.size()!=0){
-              KNNElementQueue objs=Cand.top();   
+              KNNElementQueue objs=Cand.top();
               if(!objs.empty()){
                dist=objs.getDistance();
               }
