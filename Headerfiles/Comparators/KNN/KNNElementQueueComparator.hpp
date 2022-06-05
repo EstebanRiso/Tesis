@@ -4,9 +4,6 @@
 
 
 
-//El comparador pero no se como agregarlo al priorityqueue
-//CandidatesMaxComparator.hpp lo mismo, nose como agregarlo al priorityqueue
-
 struct MINHEAP{
 
     bool operator()(KNNElementQueue const& o1 , KNNElementQueue const& o2){

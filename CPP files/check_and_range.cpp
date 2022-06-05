@@ -14,8 +14,8 @@ int main(int argc, char * argv[]){
     MREP* rep=loadRepresentation2(argv[1]);
     
 
-    cout<<rep->btl->data[0]<<endl;
-    cout<<rep->btl->data[1]<<endl;
+    cout<<rep->btl->dato[0]<<endl;
+    cout<<rep->btl->dato[1]<<endl;
     cout<<rep->div_level_table[0]<<endl;
 
     uint aceptado;

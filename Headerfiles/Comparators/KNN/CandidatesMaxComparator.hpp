@@ -4,8 +4,6 @@
 #include "../../estructures/KNN/KNNElementQueue.hpp"
 
 
-
-
 struct MAXHEAP{
 
     bool operator()(KNNElementQueue const& o1 , KNNElementQueue const& o2){

@@ -55,7 +55,6 @@ class KNN{
 
 
         void evaluateCandidates(KNNElementQueue tmp, priority_queue<KNNElementQueue,vector<KNNElementQueue>,MINHEAP> &pQueue, priority_queue<KNNElementQueue,vector<KNNElementQueue>,MAXHEAP> &Cand, int k, Point q){
-
             int accumX=0;
             int accumY=0;
             uint posHijo= tmp.getPos();
@@ -71,13 +70,15 @@ class KNN{
                 accumX = S.getX();
                 accumY = T.getY() - secuence;
             }
-            
+
             for(int i=1;i<=CANTIDADHIJOS;i++){
 
                 if(accumX >T.getX()){
                     accumY=accumY-secuence-1;
                     accumX=S.getX();
                 }
+
+            
                 if(isBitSet2(TL,posHijo)!=0){
                     temp= Rectangle(new Point(accumX,accumY),new Point(accumX+secuence,accumY+secuence));
 
@@ -87,15 +88,17 @@ class KNN{
 
                         KNNElementQueue a=getCandidate(temp,posHijo,tmp.getLevel()+1,minD);
                         pQueue.push(a); //MINHEAP
+                    
                     }
                 }
                 accumX=accumX+secuence+1;
                 posHijo++;
+           
             }           
         }
         
         KNNElementQueue getCandidate(Rectangle temp, uint posHijo, int level, int minD) {    
-            
+        
             return  KNNElementQueue((rank1_v(TL,posHijo) * (K * K)), temp, minD, level);
             
         }
@@ -207,10 +210,10 @@ class KNN{
 
             q=traductionPointQ(q);
             uint dist = -1;
-            uint diss=0;
+
 
             Rectangle quad= Rectangle( new Point(1,1) , new Point(K2TREE->getNodes(),K2TREE->getNodes()));
-            KNNElementQueue e= KNNElementQueue(diss,quad,minDist(q,quad),1);
+            KNNElementQueue e= KNNElementQueue(0,quad,minDist(q,quad),1);
 
             pQueue.push(e);
             int cantidad_ciclos=0;
@@ -219,6 +222,7 @@ class KNN{
             
                 KNNElementQueue tmp= pQueue.top();
                 pQueue.pop();
+               
                 
                 if(candidates.size()!=0){ //identificar si tiene o no elementos;
                     KNNElementQueue obj= candidates.top();

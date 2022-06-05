@@ -6,25 +6,35 @@
 
 
 typedef struct bitrs{
+    std::vector<uint> dato;
+    std::vector<uint> ers;
+    char owner; //x definir 1
+    uint integers; // 4
+    uint factor,b,s; // 4+4+4
+    uint n;     //4     5+24=29
+}BITRS;
+
+
+typedef struct bitrs_cr{
     uint *data;  // 4
     char owner; //x definir 1
     uint integers; // 4
     uint factor,b,s; // 4+4+4
     uint *Rs;  			//4		//superblock array
     uint n;     //4     5+24=29
-    std::vector<uint> dato;
-    std::vector<uint> ers;
-}BITRS;
-
-
-void buildRank(BITRS * br);
-uint buildRankSub(BITRS * br, uint ini,uint bloques);
-uint bselect(BITRS * br,uint x);
+}BITRSCR;
 
 
 
-BITRS * createBITRS( uint *bitarray, uint _n, char owner, uint _factor) {
-  BITRS * br =(BITRS *) malloc(sizeof(struct bitrs));
+
+void buildRank(BITRSCR * br);
+uint buildRankSub(BITRSCR * br, uint ini,uint bloques);
+uint bselect(BITRSCR * br,uint x);
+
+
+
+BITRSCR * createBITRSCR( uint *bitarray, uint _n, char owner, uint _factor) {
+  BITRSCR * br =(BITRSCR *) malloc(sizeof(struct bitrs_cr));
   br->data=bitarray;
   br->owner = owner;
   br->n=_n;
@@ -43,7 +53,7 @@ BITRS * createBITRS( uint *bitarray, uint _n, char owner, uint _factor) {
 
 
 
-void destroyBITRS(BITRS *br) {
+void destroyBITRS(BITRSCR *br) {
   free(br->Rs);
   if (br->owner) free(br->data);
   free(br);
@@ -51,7 +61,7 @@ void destroyBITRS(BITRS *br) {
 
 
 //Metodo que realiza la busqueda d
-void buildRank(BITRS * br) {
+void buildRank(BITRSCR * br) {
 	uint i;
   uint num_sblock = br->n/br->s;
   br->Rs = (uint *) malloc(sizeof(uint)*(num_sblock+1));   // +1 pues sumo la pos cero
@@ -66,7 +76,7 @@ void buildRank(BITRS * br) {
 }
 
 
-uint buildRankSub(BITRS * br, uint ini,uint bloques) {
+uint buildRankSub(BITRSCR * br, uint ini,uint bloques) {
   uint i;
   uint rank=0,aux;
   for(i=ini;i<ini+bloques;i++) {
@@ -80,7 +90,7 @@ uint buildRankSub(BITRS * br, uint ini,uint bloques) {
 }
 
 
-uint rank1(BITRS * br, uint i) {
+uint rank1(BITRSCR * br, uint i) {
   uint a;
   if(i+1==0) return 0;
   ++i; 
@@ -109,7 +119,7 @@ uint rank1_v(BITRS * br, uint i) {
 }
 
 
-uint isBitSet(BITRS * br, uint i) {
+uint isBitSet(BITRSCR * br, uint i) {
   if(i<0){
     return 0u;
   }
@@ -188,9 +198,9 @@ uint spaceRequirementInBits(BITRS * br) {
   return (br->owner?br->n:0)+(br->n/br->s)*sizeof(uint)*8 +sizeof(struct bitrs)*8;
 }
 
-uint lenght_in_bits(BITRS * br) { return br->n; };
+uint lenght_in_bits(BITRSCR * br) { return br->n; };
 
-uint prev(BITRS * br,uint start) {
+uint prev(BITRSCR * br,uint start) {
   // returns the position of the previous 1 bit before and including start.
   // tuned to 32 bit machine
 
@@ -211,12 +221,12 @@ uint prev(BITRS * br,uint start) {
 }
 
 
-uint select1(BITRS * br,uint x) {
+uint select1(BITRSCR * br,uint x) {
   return bselect(br,x);
 }
 
 
-uint bselect(BITRS * br,uint x) {
+uint bselect(BITRSCR * br,uint x) {
   if(x==0) return 0;
   // returns i such that x=rank(i) && rank(i-1)<x or n if that i not exist
   // first binary search over first level rank structure
@@ -284,7 +294,7 @@ uint bselect(BITRS * br,uint x) {
 }
 
 
-uint select0(BITRS * br,uint x) {
+uint select0(BITRSCR * br,uint x) {
   // returns i such that x=rank_0(i) && rank_0(i-1)<x or n if that i not exist
   // first binary search over first level rank structure
   // then sequential search using popcount over a int

@@ -4,34 +4,22 @@
 #include <time.h>
 #include "../Headerfiles/k2tree/Knn.hpp"
 
-bool cmp(pair<int, int> & a, pair<int, int> & b){
-	if(a.second != b.second){
-		return a.second < b.second;
-	}
-	return  a.first < b.first;
-}
-
 
 
 int main(int argc, char * argv[]){
-	
-
 
 	MREP * rep = loadRepresentation2(argv[1]);
-
 
     K2Tree k2=K2Tree(rep);
     KNN knn=KNN(&k2);
 
+    uint k_vecinos=atoi(argv[2]);
+    uint coord_x=atoi(argv[4]);
+    uint coord_y=atoi(argv[3]);
 
 
-
-    cout<<"info"<<endl;
-		
 	auto start = std::chrono::high_resolution_clock::now(); 
-   
-                                        //y x
-    priority_queue<KNNElementQueue,vector<KNNElementQueue>,MAXHEAP> resultado=knn.findNNQ(5,Point(2,4));
+    priority_queue<KNNElementQueue,vector<KNNElementQueue>,MAXHEAP> resultado=knn.findNNQ(k_vecinos,Point(coord_x,coord_y));
     auto finish = std::chrono::high_resolution_clock::now();
     priority_queue<KNNElementQueue,vector<KNNElementQueue>,MAXHEAP> resultado2=resultado;
 

@@ -1,7 +1,5 @@
-#include <fstream>
 #include "../Headerfiles/BitArray/MatrixRep.hpp"
 #include "../Headerfiles/k2tree/Knn.hpp"
-#include <fstream>
 #include <chrono>
 
 
@@ -26,7 +24,9 @@ int main(int argc, char * argv[]){
 	
 	string completo(argv[1]);
 	completo+= ".txt";
-	ifstream fe(completo.c_str());
+	string dir="../Pruebas/Datasets/"+completo;
+
+	ifstream fe(dir.c_str());
 	if(!fe.is_open()){
 		printf("Error al abrir el archivo %s.txt\n", argv[1]);
 		return -1;
@@ -102,18 +102,14 @@ int main(int argc, char * argv[]){
 			cedg++;
 		}
 	}
-	cout<<"TODAVIA NO HAY ERROR"<<endl;
-	
-	MREP * rep = compactCreateKTree(xedges, yedges, cantNode,cantEdge,max_level,dado);
+
+	MREPCR * rep = compactCreateKTree(xedges, yedges, cantNode,cantEdge,max_level,dado);
 	
     uint *datos=rep->btl->data;
 	uint *rs=rep->btl->Rs;
     uint integers=rep->btl->integers;
-    
 	uint s=rep->btl->s;
 	uint n=rep->btl_len;
-
-
     fstream f;
     char *filename=argv[1];
 
@@ -122,10 +118,10 @@ int main(int argc, char * argv[]){
 
     string fila=filename;
     fila+=".dat";
+	string direccion="../Pruebas/Compactados/DAT/"+fila;
 
-    cout<<fila;
 
-    f.open(fila, ios::out | ios::binary |ios::trunc);
+    f.open(direccion, ios::out | ios::binary |ios::trunc);
 
     if(f.is_open()){
         f.write(reinterpret_cast<char *>(datos),sizeof(uint)*(integers+1));
@@ -133,11 +129,6 @@ int main(int argc, char * argv[]){
         f.close();
     }
     else{cout<<"no se pudo abrir"<<endl;}
-
-
-	cout<<"viendo el data"<<endl;
-	cout<<endl;
-	cout<<"viendo el rs"<<endl;
 
  return 0;
 }
