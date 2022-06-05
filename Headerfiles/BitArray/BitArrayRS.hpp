@@ -6,10 +6,10 @@
 
 
 typedef struct bitrs{
-    std::vector<uint> dato;
-    std::vector<uint> ers;
+    vector<uint> dato;
+    vector<uint> rs;
     char owner; //x definir 1
-    uint integers; // 4
+    int integers; // 4
     uint factor,b,s; // 4+4+4
     uint n;     //4     5+24=29
 }BITRS;
@@ -109,10 +109,13 @@ uint rank1_v(BITRS * br, uint i) {
   uint a;
   if(i+1==0) return 0;
   ++i; 
-  uint resp=br->ers[i/br->s];
+  uint resp=br->rs[i/br->s];
   uint aux=(i/br->s)*(br->factor);
+
   for (a=aux;a<i/W;a++)
-    resp+=popcount(br->dato[a]);
+      resp+=popcount(br->dato[a]);
+  
+
   resp+=popcount(br->dato[i/W]  & ((1<<(i & mask31))-1));
 
   return resp;
@@ -136,11 +139,9 @@ uint isBitSet2(BITRS * br, uint i) {
   if(i<0){
     return 0u;
   }
-  uint resultado;
 
-  resultado = (1u << (i % W)) & br->dato[i/W];
-  
-  return resultado;
+  return (1u << (i % W)) & br->dato[i/W];
+ 
 }
 
 

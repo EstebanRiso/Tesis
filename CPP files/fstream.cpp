@@ -113,9 +113,6 @@ int main(int argc, char * argv[]){
     fstream f;
     char *filename=argv[1];
 
-  
-    saveRepresentation2(rep,filename);
-
     string fila=filename;
     fila+=".dat";
 	string direccion="../Pruebas/Compactados/DAT/"+fila;
@@ -124,8 +121,16 @@ int main(int argc, char * argv[]){
     f.open(direccion, ios::out | ios::binary |ios::trunc);
 
     if(f.is_open()){
-        f.write(reinterpret_cast<char *>(datos),sizeof(uint)*(integers+1));
+		f.write(reinterpret_cast<char *>(&rep->numberOfNodes),sizeof(uint));
+		f.write(reinterpret_cast<char *>(&rep->numberOfEdges),sizeof(ulong));
+		f.write(reinterpret_cast<char *>(&rep->maxLevel),sizeof(uint));
+		f.write(reinterpret_cast<char *>(&rep->btl_len),sizeof(uint));
+		f.write(reinterpret_cast<char *>(&rep->bt_len),sizeof(uint));
+		f.write(reinterpret_cast<char *>(&rep->btl->factor),sizeof(uint));
+		f.write(reinterpret_cast<char *>(&rep->level),sizeof(uint));
+		f.write(reinterpret_cast<char *>(datos),sizeof(uint)*(integers+1));
 		f.write(reinterpret_cast<char *>(rs),sizeof(uint)*(n/s+1));
+
         f.close();
     }
     else{cout<<"no se pudo abrir"<<endl;}

@@ -47,11 +47,6 @@ class KNNElementQueue{
             return;
         }
 
-        bool empty(){
-            if(this)return true;
-            else return false;
-        }
-
 };
 
 

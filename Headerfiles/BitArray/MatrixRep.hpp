@@ -73,65 +73,51 @@ uint recursive_CheckLinkQuery(MREP * rep, uint p, uint q, uint node, uint level)
 
 int * compactFullDecompression(MREP * rep);
 
-MREP * loadRepresentation(char * basename);
+MREP * loadRepresentation(uint numberOfNodes, ulong numberOfEdges, uint maxLevel, uint  btl_len, uint  bt_len, uint factor , uint level );
 void destroyRepresentation(MREP * rep);
 vector <uint> getLevelTable(fstream &f,uint &size);
+vector<uint> getDatoVector(fstream &f, uint integers);
+vector<uint> getRsVector(fstream &f, uint size);
 
 
 
-
-
-
+	
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 QUEUEOFFCONS * finalQUEUEOFFCONS;
 
 
-vector<uint> getDatoVector(char* filename,fstream &f, uint integers){
+vector<uint> getDatoVector(fstream &f, uint integers){
+
 	
-	string fila=filename;
-	fila+=".dat";
-	string dir="../Pruebas/Compactados/DAT/"+fila;
 	uint dato;
 	vector<uint> vector;
 
-    f.open(dir,ios::in | ios::binary);
-
-    if(f.is_open()){
-		
-		for(int i=0;i<integers+1;i++){
-			f.read(reinterpret_cast<char *>(&dato),sizeof(uint));
-			vector.push_back(dato);
-		}
-    }
-    else{cout<<"no se pudo abrir"<<endl;}
-
-
+	for(uint i=0;i<integers+1;i++){
+		f.read(reinterpret_cast<char *>(&dato),sizeof(uint));
+		vector.push_back(dato);
+	}
+   
 	return vector;
 }
 
 
-vector<uint> getRsVector( fstream &f , uint &size){
+vector<uint> getRsVector( fstream &f , uint size){
 	
-
 	uint dato;
-	uint integers;
 	vector<uint> vector;
+ 
+	cout<<"getRsVector"<<endl;
+	
+	for(int i=0;i<size;i++){
+		f.read(reinterpret_cast<char *>(&dato),sizeof(uint));
+		vector.push_back(dato);
+	}
 
-    if(f.is_open()){
-		
-		for(int i=0;i<size;i++){
-			f.read(reinterpret_cast<char *>(&dato),sizeof(uint));
-			vector.push_back(dato);
-		}
-
-    }
-    else{cout<<"no se pudo abrir"<<endl;}
-
+	f.close();
 
 	return vector;
 }
-
 
 
 
@@ -385,12 +371,10 @@ void saveRepresentation2(MREPCR * rep, char * basename){
 		return;
 	}
 
-	char *filename = (char *) malloc(sizeof(char)*(strlen(basename)+4));
-	strcpy(filename,basename);
-	strcat(filename,".kt");
-	char *dir = (char *) malloc(sizeof(char)*27);
-	strcpy(dir,"../Pruebas/Compactados/KT/");
-	strcat(dir,filename);
+	string filename(basename);
+	filename="../Pruebas/Compactados/KT/"+filename+".kt";
+	char *dir=const_cast<char*>(filename.c_str());
+
 	FILE * ft = fopen(dir,"w");
 	fwrite(&(rep->numberOfNodes),sizeof(uint),1,ft);
 	fwrite(&(rep->numberOfEdges),sizeof(ulong),1,ft);
@@ -401,81 +385,71 @@ void saveRepresentation2(MREPCR * rep, char * basename){
 	fwrite (&(rep->level),sizeof(uint),1,ft);
 
 	fclose(ft);
-	free(filename);
+	free(dir);
 }
 
 
 MREP * loadRepresentation2(char * basename){
 
-	MREP * rep = loadRepresentation(basename);
+	MREP* rep;
 
 	fstream f;
-	uint integers=rep->btl->integers;
-	rep->btl->dato=getDatoVector(basename,f,integers);
-	uint size=(rep->btl_len/rep->btl->s+1);
-	rep->btl->ers=getRsVector(f,size);
-	size=rep->maxLevel+1;
 
-   
+	string dir(basename);
+	dir="../Pruebas/Compactados/DAT/"+dir+".dat";
+	
+    f.open(dir,ios::in | ios::binary);
+
+	if(f.is_open()){
+		
+		uint numberOfNodes,maxLevel, btl_len, bt_len, factor, level;
+		ulong numberOfEdges;
+
+		f.read(reinterpret_cast<char *>(&numberOfNodes),sizeof(uint));
+		f.read(reinterpret_cast<char *>(&numberOfEdges),sizeof(ulong));
+		f.read(reinterpret_cast<char *>(&maxLevel),sizeof(uint));
+		f.read(reinterpret_cast<char *>(&btl_len),sizeof(uint));
+		f.read(reinterpret_cast<char *>(&bt_len),sizeof(uint));
+		f.read(reinterpret_cast<char *>(&factor),sizeof(uint));
+		f.read(reinterpret_cast<char *>(&level),sizeof(uint));
+
+		rep=loadRepresentation(numberOfNodes,numberOfEdges,maxLevel,btl_len,bt_len,factor,level);
+		
+		int integers=rep->btl->integers;
+		rep->btl->dato=getDatoVector(f,integers);
+		uint size=(rep->btl_len/rep->btl->s+1);
+		rep->btl->rs=getRsVector(f,size);
+	}	
+	
+	cout<<"voy a retornar rep"<<endl;
 	return rep;
 }
 
+MREP * loadRepresentation(uint numberOfNodes, ulong numberOfEdges, uint maxLevel, uint  btl_len, uint  bt_len, uint factor , uint level ){
+	
+	MREP *rep;
+	rep=(MREP *)malloc(sizeof(struct matrixRep));
+	rep->btl=(BITRS *)malloc(sizeof(struct bitrs));
 
-vector <uint> getLevelTable(fstream &f,uint &size){
-	cout<<"el size"<<size<<endl;
-	uint dato;
-	uint integers;
-	vector<uint> vector;
-
-    if(f.is_open()){
-
-		for(int i=0;i<size;i++){
-			f.read(reinterpret_cast<char *>(&dato),sizeof(uint));
-			vector.push_back(dato);
-		}
-		cout<<"voy a cerrar el archivo";
-		f.close();
-    }
-    else{cout<<"no se pudo abrir"<<endl;}
+	rep->numberOfNodes=numberOfNodes;
+	rep->numberOfEdges=numberOfEdges;
+	rep->maxLevel=maxLevel;
+	rep->btl_len=btl_len;
+	rep->bt_len=bt_len;
+	rep->btl->factor=factor;
+	rep->level=level;
 
 
-	return vector;
-}
-
-MREP * loadRepresentation(char * basename){
-	MREP * rep;
-
-	int i;
-	rep = (MREP *) malloc(sizeof(struct matrixRep));
-	rep->btl = (BITRS *) malloc(sizeof(struct bitrs));
-	char *filename = (char *) malloc(sizeof(char)*(strlen(basename)+4));
-	strcpy(filename,basename);
-	strcat(filename,".kt");
-	char *dir = (char *) malloc(sizeof(char)*27);
-	strcpy(dir,"../Pruebas/Compactados/KT/");
-	strcat(dir,filename);
-	FILE * ft = fopen(dir,"r");
-	fread(&(rep->numberOfNodes),sizeof(uint),1,ft);
-	fread(&(rep->numberOfEdges),sizeof(ulong),1,ft);
-	fread(&(rep->maxLevel),sizeof(uint),1,ft);
-	fread (&(rep->btl_len),sizeof(uint),1,ft);  
-	fread (&(rep->bt_len),sizeof(uint),1,ft);
 	rep->btl->b=32;    
-	uint b=rep->btl->b;                      
-	fread (&(rep->btl->factor),sizeof(uint),1,ft);
-	fread (&(rep->level),sizeof(uint),1,ft);
+	uint b=rep->btl->b;
 	rep->btl->s=b*rep->btl->factor;
-	uint s=rep->btl->s;
     rep->btl->n = rep->btl_len;
 	uint n= rep->btl->n;
-	uint n2 = rep->btl_len;
 	rep->btl->integers = n/W;
-
-	rep->element = (uint *)malloc(sizeof(uint)*MAX_INFO);	
 	
-	free(filename);
 	return rep;
 }
+
 
 void destroyRepresentation(MREPCR * rep){
 	destroyBITRS(rep->btl);
@@ -587,7 +561,7 @@ uint * compactInverseList(MREPCR * rep, int y){
 }
 
 
-void recursiveAdjacencyList(MREPCR * rep, uint node, uint basex, uint basey, uint level){
+void recursiveAdjacencyList(MREPCR * rep, uint node, uint basex, uint basey, int level){
 	uint posInf;
 	int i, j,div_level,xrelat,newnode;
 	if(level<rep->maxLevel){	
@@ -627,7 +601,9 @@ uint * compact2AdjacencyList(MREPCR * rep, int x){
 void recursiveRangeQuery(MREP * rep,uint p1, uint p2, uint q1, uint q2, uint dp, uint dq,uint x,int l);
 
 void recursiveRangeQuery(MREPCR * rep,uint p1, uint p2, uint q1, uint q2, uint dp, uint dq,uint x,int l){
-	int i,j,leaf;
+	uint i,j;
+	
+	int leaf;
 	uint y, divlevel, p1new, p2new, q1new, q2new;
 	if(l==rep->maxLevel){	
 		for(i=p1;i<=p2;i++){

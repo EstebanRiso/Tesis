@@ -34,14 +34,12 @@ class KNN{
             return  Point(q.getY(),abs(q.getX() - K2TREE->getNodes()) + 1);
         }
 
-        bool isCandidate(priority_queue<KNNElementQueue,vector<KNNElementQueue>,MAXHEAP> Cand, int k, int minD){
+        bool isCandidate(priority_queue<KNNElementQueue,vector<KNNElementQueue>,MAXHEAP> Cand, uint k, int minD){
            int dist=0;
         
            if(Cand.size()!=0){
               KNNElementQueue objs=Cand.top();
-              if(!objs.empty()){
-               dist=objs.getDistance();
-              }
+              dist=objs.getDistance();
            }
         
           
@@ -54,7 +52,7 @@ class KNN{
         }
 
 
-        void evaluateCandidates(KNNElementQueue tmp, priority_queue<KNNElementQueue,vector<KNNElementQueue>,MINHEAP> &pQueue, priority_queue<KNNElementQueue,vector<KNNElementQueue>,MAXHEAP> &Cand, int k, Point q){
+        void evaluateCandidates(KNNElementQueue tmp, priority_queue<KNNElementQueue,vector<KNNElementQueue>,MINHEAP> &pQueue, priority_queue<KNNElementQueue,vector<KNNElementQueue>,MAXHEAP> &Cand, uint k, Point q){
             int accumX=0;
             int accumY=0;
             uint posHijo= tmp.getPos();
@@ -78,7 +76,7 @@ class KNN{
                     accumX=S.getX();
                 }
 
-            
+                       
                 if(isBitSet2(TL,posHijo)!=0){
                     temp= Rectangle(new Point(accumX,accumY),new Point(accumX+secuence,accumY+secuence));
 
@@ -98,7 +96,8 @@ class KNN{
         }
         
         KNNElementQueue getCandidate(Rectangle temp, uint posHijo, int level, int minD) {    
-        
+           
+
             return  KNNElementQueue((rank1_v(TL,posHijo) * (K * K)), temp, minD, level);
             
         }
