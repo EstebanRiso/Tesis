@@ -1,6 +1,5 @@
 
 #include <fstream>
-#include <chrono>
 #include <time.h>
 #include "../Headerfiles/k2tree/Knn.hpp"
 
