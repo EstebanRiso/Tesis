@@ -36,13 +36,13 @@ class KNN{
             return  Point(q.getY(),abs(q.getX() - K2TREE->getNodes()) + 1);
         }
 
-        bool isCandidate(priority_queue<KNNElementQueue,vector<KNNElementQueue>,MAXHEAP> Cand, uint k, int minD){
+        bool isCandidate(uint k, int minD){
            int dist=0;
         
-           KNNElementQueue objs=Cand.top();
+           KNNElementQueue objs=candidates.top();
            dist=objs.getDistance();
            
-           return (Cand.size()< k || minD < dist);
+           return (candidates.size()< k || minD < dist);
         }
 
         bool isLeaf(KNNElementQueue tmp){
@@ -50,7 +50,7 @@ class KNN{
         }
 
 
-        void evaluateCandidates(KNNElementQueue tmp, priority_queue<KNNElementQueue,vector<KNNElementQueue>,MINHEAP> &pQueue, priority_queue<KNNElementQueue,vector<KNNElementQueue>,MAXHEAP> &Cand, uint k, Point q){
+        void evaluateCandidates(KNNElementQueue tmp, uint k, Point q){
             int accumX=0;
             int accumY=0;
             uint posHijo= tmp.getPos();
@@ -77,19 +77,16 @@ class KNN{
                 if(isBitSet2(TL,posHijo)!=0){
                     temp= Rectangle(new Point(accumX,accumY),new Point(accumX+secuence,accumY+secuence));
                     int minD = minDist(q,temp);
-
-                    auto start = std::chrono::high_resolution_clock::now(); 
                     if(!traspaso){
                         KNNElementQueue a= getCandidate(temp,posHijo,tmp.getLevel()+1,minD);
                         pQueue.push(a);
                     }else{
-                        if(isCandidate(Cand,k,minD)){
+                        if(isCandidate(k,minD)){
                             KNNElementQueue a= getCandidate(temp,posHijo,tmp.getLevel()+1,minD);
                             pQueue.push(a); 
                         }
                     }
-                    auto finish = std::chrono::high_resolution_clock::now(); 
-                    cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count() << " if ns\n";
+                    
                 }
                 accumX=accumX+secuence+1;
                 posHijo++;
@@ -246,7 +243,7 @@ class KNN{
                         }
                     }
                 } else {
-                        evaluateCandidates(tmp,pQueue, candidates, k, q);
+                        evaluateCandidates(tmp, k, q);
                 }
             }
             
