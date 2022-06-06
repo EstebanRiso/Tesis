@@ -38,11 +38,17 @@ class KNN{
         bool isCandidate(priority_queue<KNNElementQueue,vector<KNNElementQueue>,MAXHEAP> Cand, uint k, int minD){
            int dist=0;
         
+           auto start_1 = std::chrono::high_resolution_clock::now(); 
            if(Cand.size()!=0){
+              auto start_2 = std::chrono::high_resolution_clock::now(); 
               KNNElementQueue objs=Cand.top();
               dist=objs.getDistance();
+              auto finish_2 = std::chrono::high_resolution_clock::now(); 
+              cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish_2-start_2).count() << "ns de if Cand.size()\n";
+          
            }
-        
+           auto finish_1 = std::chrono::high_resolution_clock::now(); 
+           cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish_1-start_1).count() << "ns de if Cand.size()\n";
           
            return (Cand.size()< k || minD < dist);
 
