@@ -24,6 +24,7 @@ class KNN{
         int ALTURA;
         int CANTIDADHIJOS;
         K2Tree *K2TREE;
+        bool traspaso;
         int cantDistanceCalculation;
         //PriorityQueue?
         priority_queue<KNNElementQueue,vector<KNNElementQueue>,MINHEAP> pQueue;
@@ -38,17 +39,10 @@ class KNN{
         bool isCandidate(priority_queue<KNNElementQueue,vector<KNNElementQueue>,MAXHEAP> Cand, uint k, int minD){
            int dist=0;
         
-           auto start_1 = std::chrono::high_resolution_clock::now(); 
            if(Cand.size()!=0){
-              auto start_2 = std::chrono::high_resolution_clock::now(); 
               KNNElementQueue objs=Cand.top();
               dist=objs.getDistance();
-              auto finish_2 = std::chrono::high_resolution_clock::now(); 
-              cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish_2-start_2).count() << "ns dentro if Cand.size()\n";
            }
-           
-           auto finish_1 = std::chrono::high_resolution_clock::now(); 
-           cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish_1-start_1).count() << "ns de if Cand.size()\n";
           
            return (Cand.size()< k || minD < dist);
         }
@@ -67,7 +61,6 @@ class KNN{
             int secuence= getSecuence(tmp); 
             Rectangle temp;
 
-            auto start_0 = std::chrono::high_resolution_clock::now(); 
             if(tmp.getLevel() == K2TREE->getHeight()){
                 accumX = S.getX();
                 accumY = T.getY(); 
@@ -75,8 +68,6 @@ class KNN{
                 accumX = S.getX();
                 accumY = T.getY() - secuence;
             }
-            auto finish_0 = std::chrono::high_resolution_clock::now(); 
-            cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish_0-start_0).count() << "ns de If getlevel\n";
 
             for(int i=1;i<=CANTIDADHIJOS;i++){
 
@@ -85,28 +76,18 @@ class KNN{
                     accumX=S.getX();
                 }
 
-                auto start_1 = std::chrono::high_resolution_clock::now(); 
                 if(isBitSet2(TL,posHijo)!=0){
-                    auto finish_1 = std::chrono::high_resolution_clock::now(); 
-                    cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish_1-start_1).count() << "ns de bitSet\n";
                     temp= Rectangle(new Point(accumX,accumY),new Point(accumX+secuence,accumY+secuence));
-
                     int minD = minDist(q,temp);
-                    auto start_2 = std::chrono::high_resolution_clock::now(); 
-                    if(isCandidate(Cand,k,minD)){
-                        auto finish_2 = std::chrono::high_resolution_clock::now(); 
-                         cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish_2-start_2).count() << "ns de isCandidate\n";
-                        
-                        auto start_3 = std::chrono::high_resolution_clock::now(); 
+
+                    if(!traspaso){
                         KNNElementQueue a=getCandidate(temp,posHijo,tmp.getLevel()+1,minD);
-                        auto finish_3 = std::chrono::high_resolution_clock::now(); 
-                        cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish_3-start_3).count() << "ns getCandidate\n";
-                        
-                        auto start_4=std::chrono::high_resolution_clock::now();
                         pQueue.push(a); //MINHEAP
-                        auto finish_4=std::chrono::high_resolution_clock::now();
-                        cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish_4-start_4).count() << "ns de PQueue\n";
-                    
+                    }else{
+                        if(isCandidate(Cand,k,minD)){
+                            KNNElementQueue a=getCandidate(temp,posHijo,tmp.getLevel()+1,minD);
+                            pQueue.push(a); //MINHEAP
+                        }
                     }
                 }
                 accumX=accumX+secuence+1;
@@ -163,11 +144,7 @@ class KNN{
             int value1 = p.getX() - R1;
             int value2 = p.getY() - R2;
 
-            auto start_1 = std::chrono::high_resolution_clock::now(); 
             int resultado=abs(value1*value1)+ abs(value2*value2);
-            auto finish_1 = std::chrono::high_resolution_clock::now(); 
-
-            cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish_1-start_1).count() << "ns de abs\n";
 
             return (int) abs(value1*value1)+ abs(value2*value2);
         }
@@ -181,6 +158,7 @@ class KNN{
             this->TL=k2->getBitArrayRS();
             this->k=k2->getK();
             ALTURA=k2->getHeight();
+            this->traspaso=false;
             CANTIDADHIJOS=K*K;
         }
 
@@ -247,11 +225,8 @@ class KNN{
 
             while(!pQueue.empty()){
                 
-                auto start_1 = std::chrono::high_resolution_clock::now(); 
                 KNNElementQueue tmp= pQueue.top();
                 pQueue.pop();
-                auto finish_1 = std::chrono::high_resolution_clock::now(); 
-                cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish_1-start_1).count() << "ns de top con pop\n";
                 
                 if(candidates.size()!=0){ //identificar si tiene o no elementos;
                     KNNElementQueue obj= candidates.top();
@@ -263,6 +238,7 @@ class KNN{
                 }
                 if(isLeaf(tmp)){
                     if(candidates.size()<k){
+                        if(traspaso==false){traspaso=true;}
                         candidates.push(tmp);
                     } else{
                         KNNElementQueue aux= candidates.top();
