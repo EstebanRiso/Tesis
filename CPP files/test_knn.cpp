@@ -24,8 +24,6 @@ int main(int argc, char * argv[]){
 	MREP * rep = loadRepresentation2(argv[1]);
     string bitarray=generate_bitarray(rep); 
 
-    cout<<"btl es:"<<bitarray<<endl;
-
     K2Tree k2=K2Tree(rep,bitarray);
     KNN knn=KNN(&k2);
 

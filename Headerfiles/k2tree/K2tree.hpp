@@ -24,6 +24,9 @@ class K2Tree{
       this->bitarray=bitarray;
     }
 
+    string get_StringBitarray(){
+        return bitarray;     
+    }
 
     BITRS* getBitArrayRS(){
         return tl->btl;

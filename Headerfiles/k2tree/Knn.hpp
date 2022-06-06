@@ -22,6 +22,7 @@ class KNN{
         int ALTURA;
         int CANTIDADHIJOS;
         K2Tree *K2TREE;
+        string bitarray;
         bool traspaso;
         int cantDistanceCalculation;
         priority_queue<KNNElementQueue,vector<KNNElementQueue>,MINHEAP> pQueue;
@@ -71,7 +72,7 @@ class KNN{
                     accumX=S.getX();
                 }
 
-                if(isBitSet2(TL,posHijo)!=0){
+                if(bitarray.at(posHijo)!='0'){
                     temp= Rectangle(new Point(accumX,accumY),new Point(accumX+secuence,accumY+secuence));
                     
                     if(!traspaso){
@@ -147,6 +148,7 @@ class KNN{
             ALTURA=k2->getHeight();
             this->traspaso=false;
             CANTIDADHIJOS=K*K;
+            this->bitarray=k2->get_StringBitarray();
         }
 
         ~KNN(){};
