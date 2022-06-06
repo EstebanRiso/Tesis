@@ -12,16 +12,16 @@ class K2Tree{
     private:
 
     MREP* tl;
-
-
+    string bitarray;
   
 
     public:
     K2Tree();
     ~K2Tree(){};
 
-    K2Tree(MREP *a){
+    K2Tree(MREP *a, string bitarray){
       tl=a;
+      this->bitarray=bitarray;
     }
 
 

@@ -19,14 +19,11 @@ class KNN{
 
         int k;
         BITRS *TL;
-        //BitArrayRS;
-        string bitarray;
         int ALTURA;
         int CANTIDADHIJOS;
         K2Tree *K2TREE;
         bool traspaso;
         int cantDistanceCalculation;
-        //PriorityQueue?
         priority_queue<KNNElementQueue,vector<KNNElementQueue>,MINHEAP> pQueue;
         priority_queue<KNNElementQueue,vector<KNNElementQueue>,MAXHEAP> candidates;
 
@@ -76,13 +73,13 @@ class KNN{
 
                 if(isBitSet2(TL,posHijo)!=0){
                     temp= Rectangle(new Point(accumX,accumY),new Point(accumX+secuence,accumY+secuence));
-                    int minD = minDist(q,temp);
+                    
                     if(!traspaso){
-                        KNNElementQueue a= getCandidate(temp,posHijo,tmp.getLevel()+1,minD);
+                        KNNElementQueue a= KNNElementQueue(rank1_v(TL,posHijo)*K*K,temp,minDist(q,temp),tmp.getLevel()+1);
                         pQueue.push(a);
                     }else{
-                        if(isCandidate(k,minD)){
-                            KNNElementQueue a= getCandidate(temp,posHijo,tmp.getLevel()+1,minD);
+                        if(isCandidate(k,minDist(q,temp))){
+                            KNNElementQueue a= KNNElementQueue(rank1_v(TL,posHijo)*K*K,temp,minDist(q,temp),tmp.getLevel()+1);
                             pQueue.push(a); 
                         }
                     }
@@ -92,15 +89,9 @@ class KNN{
                 posHijo++;
            
             }           
-           
             
         }
-        
-        KNNElementQueue getCandidate(Rectangle temp, uint posHijo, int level, int minD) {    
-           
-            return  KNNElementQueue((rank1_v(TL,posHijo) * (K * K)), temp, minD, level);
-            
-        }
+
 
         int getSecuence(KNNElementQueue tmp){
 
@@ -158,13 +149,13 @@ class KNN{
             CANTIDADHIJOS=K*K;
         }
 
-        ~KNN(){}
+        ~KNN(){};
 
-        void imprimir(priority_queue<KNNElementQueue,vector<KNNElementQueue>,MINHEAP> &p){
+        void imprimir(){
 
             cout<<"abriendo knn"<<endl;
 
-            priority_queue<KNNElementQueue,vector<KNNElementQueue>,MINHEAP> resultado=p;
+            priority_queue<KNNElementQueue,vector<KNNElementQueue>,MINHEAP> resultado=pQueue;
                 cout<<"pQueue"<<endl<<endl;
 
                 while(!resultado.empty()){
@@ -175,7 +166,7 @@ class KNN{
                 cout<<endl;
 
 
-                priority_queue<KNNElementQueue,vector<KNNElementQueue>,MINHEAP> resultado3=p;
+                priority_queue<KNNElementQueue,vector<KNNElementQueue>,MINHEAP> resultado3=pQueue;
                 
                 cout<<endl<<"S:"<<endl;
 
@@ -190,7 +181,7 @@ class KNN{
                 cout<<endl;
 
 
-                priority_queue<KNNElementQueue,vector<KNNElementQueue>,MINHEAP> resultado2=p;
+                priority_queue<KNNElementQueue,vector<KNNElementQueue>,MINHEAP> resultado2=pQueue;
                 
                 cout<<"T:"<<endl;
 

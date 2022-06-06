@@ -4,11 +4,29 @@
 #include "../Headerfiles/k2tree/Knn.hpp"
 
 
+string generate_bitarray(MREP* rep){
+
+  string arr;  
+
+    for(int i=0;i<rep->btl_len;i++){
+        if(isBitSet2(rep->btl,i)!=0){
+            arr+="0";
+        }else{
+            arr+="1";
+        }
+    } 
+
+    return arr;
+}
+
 
 int main(int argc, char * argv[]){
 	MREP * rep = loadRepresentation2(argv[1]);
+    string bitarray=generate_bitarray(rep); 
 
-    K2Tree k2=K2Tree(rep);
+    cout<<"btl es:"<<bitarray<<endl;
+
+    K2Tree k2=K2Tree(rep,bitarray);
     KNN knn=KNN(&k2);
 
     uint k_vecinos=atoi(argv[2]);
