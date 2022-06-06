@@ -99,7 +99,7 @@ class KNN{
                         auto start_4=std::chrono::high_resolution_clock::now();
                         pQueue.push(a); //MINHEAP
                         auto finish_4=std::chrono::high_resolution_clock::now();
-                        cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish_4-start_4).count() << "ns de PQueue";
+                        cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish_4-start_4).count() << "ns de PQueue\n";
                     
                     }
                 }
@@ -240,10 +240,12 @@ class KNN{
             int cantidad_ciclos=0;
 
             while(!pQueue.empty()){
-            
+                
+                auto start_1 = std::chrono::high_resolution_clock::now(); 
                 KNNElementQueue tmp= pQueue.top();
                 pQueue.pop();
-               
+                auto finish_1 = std::chrono::high_resolution_clock::now(); 
+                cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish_1-start_1).count() << "ns de top con pop\n";
                 
                 if(candidates.size()!=0){ //identificar si tiene o no elementos;
                     KNNElementQueue obj= candidates.top();
