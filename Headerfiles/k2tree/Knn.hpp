@@ -82,14 +82,19 @@ class KNN{
                 auto start_1 = std::chrono::high_resolution_clock::now(); 
                 if(isBitSet2(TL,posHijo)!=0){
                     auto finish_1 = std::chrono::high_resolution_clock::now(); 
-                    cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish_1-start_1).count() << "ns de for\n";
+                    cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish_1-start_1).count() << "ns de bitSet\n";
                     temp= Rectangle(new Point(accumX,accumY),new Point(accumX+secuence,accumY+secuence));
 
                     int minD = minDist(q,temp);
-                  
+                    auto start_2 = std::chrono::high_resolution_clock::now(); 
                     if(isCandidate(Cand,k,minD)){
-
+                        auto finish_2 = std::chrono::high_resolution_clock::now(); 
+                         cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish_2-start_2).count() << "ns de isCandidate\n";
+                        
+                        auto start_3 = std::chrono::high_resolution_clock::now(); 
                         KNNElementQueue a=getCandidate(temp,posHijo,tmp.getLevel()+1,minD);
+                        auto finish_3 = std::chrono::high_resolution_clock::now(); 
+                        cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish_2-start_2).count() << "ns getCandidate\n";
                         pQueue.push(a); //MINHEAP
                     
                     }
