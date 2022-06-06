@@ -44,7 +44,7 @@ class KNN{
               KNNElementQueue objs=Cand.top();
               dist=objs.getDistance();
               auto finish_2 = std::chrono::high_resolution_clock::now(); 
-              cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish_2-start_2).count() << "ns de if Cand.size()\n";
+              cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish_2-start_2).count() << "ns dentro if Cand.size()\n";
           
            }
            auto finish_1 = std::chrono::high_resolution_clock::now(); 
