@@ -10,9 +10,9 @@ string generate_bitarray(MREP* rep){
 
     for(int i=0;i<rep->btl_len;i++){
         if(isBitSet2(rep->btl,i)!=0){
-            arr+="0";
-        }else{
             arr+="1";
+        }else{
+            arr+="0";
         }
     } 
 
