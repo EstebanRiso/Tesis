@@ -94,12 +94,12 @@ class KNN{
                         auto start_3 = std::chrono::high_resolution_clock::now(); 
                         KNNElementQueue a=getCandidate(temp,posHijo,tmp.getLevel()+1,minD);
                         auto finish_3 = std::chrono::high_resolution_clock::now(); 
-                        cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish_2-start_2).count() << "ns getCandidate\n";
+                        cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish_3-start_3).count() << "ns getCandidate\n";
                         
                         auto start_4=std::chrono::high_resolution_clock::now();
                         pQueue.push(a); //MINHEAP
                         auto finish_4=std::chrono::high_resolution_clock::now();
-                        cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish_2-start_2).count() << "ns de PQueue";
+                        cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish_4-start_4).count() << "ns de PQueue";
                     
                     }
                 }
