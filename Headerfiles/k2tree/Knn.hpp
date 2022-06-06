@@ -70,13 +70,19 @@ class KNN{
                 accumY = T.getY() - secuence;
             }
 
+
+
+            auto start_1 = std::chrono::high_resolution_clock::now(); 
             for(int i=1;i<=CANTIDADHIJOS;i++){
 
                 if(accumX >T.getX()){
                     accumY=accumY-secuence-1;
                     accumX=S.getX();
                 }
+            
+                        
 
+        
                        
                 if(isBitSet2(TL,posHijo)!=0){
                     temp= Rectangle(new Point(accumX,accumY),new Point(accumX+secuence,accumY+secuence));
@@ -94,6 +100,9 @@ class KNN{
                 posHijo++;
            
             }           
+            auto finish_1 = std::chrono::high_resolution_clock::now(); 
+            cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish_1-start_1).count() << "ns de for\n";
+            
         }
         
         KNNElementQueue getCandidate(Rectangle temp, uint posHijo, int level, int minD) {    
@@ -146,15 +155,7 @@ class KNN{
             int resultado=abs(value1*value1)+ abs(value2*value2);
             auto finish_1 = std::chrono::high_resolution_clock::now(); 
 
-            cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish_1-start_1).count() << "ns\n";
-
-
-            auto start_2 = std::chrono::high_resolution_clock::now();
-            resultado=abs(value1*value1)+ abs(value2*value2);
-            auto finish_2 = std::chrono::high_resolution_clock::now(); 
-            
-            cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish_2-start_2).count() << "ns\n";
-
+            cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish_1-start_1).count() << "ns de abs\n";
 
             return (int) abs(value1*value1)+ abs(value2*value2);
         }
