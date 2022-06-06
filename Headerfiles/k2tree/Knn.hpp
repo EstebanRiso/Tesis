@@ -39,11 +39,9 @@ class KNN{
         bool isCandidate(priority_queue<KNNElementQueue,vector<KNNElementQueue>,MAXHEAP> Cand, uint k, int minD){
            int dist=0;
         
-           if(Cand.size()!=0){
-              KNNElementQueue objs=Cand.top();
-              dist=objs.getDistance();
-           }
-          
+           KNNElementQueue objs=Cand.top();
+           dist=objs.getDistance();
+           
            return (Cand.size()< k || minD < dist);
         }
 
@@ -82,11 +80,11 @@ class KNN{
 
                     if(!traspaso){
                         KNNElementQueue a=getCandidate(temp,posHijo,tmp.getLevel()+1,minD);
-                        pQueue.push(a); //MINHEAP
+                        pQueue.push(a);
                     }else{
                         if(isCandidate(Cand,k,minD)){
                             KNNElementQueue a=getCandidate(temp,posHijo,tmp.getLevel()+1,minD);
-                            pQueue.push(a); //MINHEAP
+                            pQueue.push(a); 
                         }
                     }
                 }
@@ -100,7 +98,6 @@ class KNN{
         
         KNNElementQueue getCandidate(Rectangle temp, uint posHijo, int level, int minD) {    
            
-
             return  KNNElementQueue((rank1_v(TL,posHijo) * (K * K)), temp, minD, level);
             
         }
@@ -238,7 +235,7 @@ class KNN{
                 }
                 if(isLeaf(tmp)){
                     if(candidates.size()<k){
-                        if(traspaso==false){traspaso=true;}
+                        traspaso=true;
                         candidates.push(tmp);
                     } else{
                         KNNElementQueue aux= candidates.top();
