@@ -1,4 +1,4 @@
-#include "k2tree.hpp"
+#include "K2tree.hpp"
 #include "../estructures/KNN/KNNElementQueue.hpp"
 #include <queue>
 #include "../Comparators/KNN/CandidatesMaxComparator.hpp"
@@ -141,6 +141,20 @@ class KNN{
             int value1 = p.getX() - R1;
             int value2 = p.getY() - R2;
 
+            auto start_1 = std::chrono::high_resolution_clock::now(); 
+            int resultado=abs(value1*value1)+ abs(value2*value2);
+            auto finish_1 = std::chrono::high_resolution_clock::now(); 
+
+            cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish_1-start_1).count() << "ns\n";
+
+
+            auto start_2 = std::chrono::high_resolution_clock::now();
+            resultado=abs(value1*value1)+ abs(value2*value2);
+            auto finish_2 = std::chrono::high_resolution_clock::now(); 
+            
+            cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish_2-start_2).count() << "ns\n";
+
+
             return (int) abs(value1*value1)+ abs(value2*value2);
         }
 
@@ -167,7 +181,7 @@ class KNN{
 
                 while(!resultado.empty()){
                     KNNElementQueue a =resultado.top();
-                     cout<<a.getDistance()<<" ";
+                    cout<<a.getDistance()<<" ";
                     resultado.pop();
                 }
                 cout<<endl;
