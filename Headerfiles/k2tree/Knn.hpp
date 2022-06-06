@@ -72,19 +72,17 @@ class KNN{
 
 
 
-            auto start_1 = std::chrono::high_resolution_clock::now(); 
             for(int i=1;i<=CANTIDADHIJOS;i++){
 
                 if(accumX >T.getX()){
                     accumY=accumY-secuence-1;
                     accumX=S.getX();
                 }
-            
-                        
 
-        
-                       
+                auto start_1 = std::chrono::high_resolution_clock::now(); 
                 if(isBitSet2(TL,posHijo)!=0){
+                    auto finish_1 = std::chrono::high_resolution_clock::now(); 
+                    cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish_1-start_1).count() << "ns de for\n";
                     temp= Rectangle(new Point(accumX,accumY),new Point(accumX+secuence,accumY+secuence));
 
                     int minD = minDist(q,temp);
@@ -100,8 +98,7 @@ class KNN{
                 posHijo++;
            
             }           
-            auto finish_1 = std::chrono::high_resolution_clock::now(); 
-            cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish_1-start_1).count() << "ns de for\n";
+           
             
         }
         

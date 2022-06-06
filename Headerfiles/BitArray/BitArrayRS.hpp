@@ -136,6 +136,8 @@ uint isBitSet(BITRSCR * br, uint i) {
 
 
 uint isBitSet2(BITRS * br, uint i) {
+  
+
   if(i<0){
     return 0u;
   }
