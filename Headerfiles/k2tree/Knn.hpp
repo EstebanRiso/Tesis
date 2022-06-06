@@ -45,13 +45,12 @@ class KNN{
               dist=objs.getDistance();
               auto finish_2 = std::chrono::high_resolution_clock::now(); 
               cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish_2-start_2).count() << "ns dentro if Cand.size()\n";
-          
            }
+           
            auto finish_1 = std::chrono::high_resolution_clock::now(); 
            cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish_1-start_1).count() << "ns de if Cand.size()\n";
           
            return (Cand.size()< k || minD < dist);
-
         }
 
         bool isLeaf(KNNElementQueue tmp){
@@ -68,6 +67,7 @@ class KNN{
             int secuence= getSecuence(tmp); 
             Rectangle temp;
 
+            auto start_0 = std::chrono::high_resolution_clock::now(); 
             if(tmp.getLevel() == K2TREE->getHeight()){
                 accumX = S.getX();
                 accumY = T.getY(); 
@@ -75,8 +75,8 @@ class KNN{
                 accumX = S.getX();
                 accumY = T.getY() - secuence;
             }
-
-
+            auto finish_0 = std::chrono::high_resolution_clock::now(); 
+            cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish_0-start_0).count() << "ns de If getlevel\n";
 
             for(int i=1;i<=CANTIDADHIJOS;i++){
 
