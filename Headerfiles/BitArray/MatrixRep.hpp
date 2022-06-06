@@ -421,7 +421,6 @@ MREP * loadRepresentation2(char * basename){
 		rep->btl->rs=getRsVector(f,size);
 	}	
 	
-	cout<<"voy a retornar rep"<<endl;
 	return rep;
 }
 

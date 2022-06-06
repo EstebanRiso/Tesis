@@ -61,7 +61,7 @@ class KNN{
 
             if(tmp.getLevel() == K2TREE->getHeight()){
                 accumX = S.getX();
-                accumY = T.getY(); 
+                accumY = T.getY();
             }else{
                 accumX = S.getX();
                 accumY = T.getY() - secuence;
@@ -78,15 +78,18 @@ class KNN{
                     temp= Rectangle(new Point(accumX,accumY),new Point(accumX+secuence,accumY+secuence));
                     int minD = minDist(q,temp);
 
+                    auto start = std::chrono::high_resolution_clock::now(); 
                     if(!traspaso){
-                        KNNElementQueue a=getCandidate(temp,posHijo,tmp.getLevel()+1,minD);
+                        KNNElementQueue a= getCandidate(temp,posHijo,tmp.getLevel()+1,minD);
                         pQueue.push(a);
                     }else{
                         if(isCandidate(Cand,k,minD)){
-                            KNNElementQueue a=getCandidate(temp,posHijo,tmp.getLevel()+1,minD);
+                            KNNElementQueue a= getCandidate(temp,posHijo,tmp.getLevel()+1,minD);
                             pQueue.push(a); 
                         }
                     }
+                    auto finish = std::chrono::high_resolution_clock::now(); 
+                    cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count() << " if ns\n";
                 }
                 accumX=accumX+secuence+1;
                 posHijo++;
@@ -142,7 +145,6 @@ class KNN{
             int value2 = p.getY() - R2;
 
             int resultado=abs(value1*value1)+ abs(value2*value2);
-
             return (int) abs(value1*value1)+ abs(value2*value2);
         }
 
@@ -224,10 +226,9 @@ class KNN{
                 
                 KNNElementQueue tmp= pQueue.top();
                 pQueue.pop();
-                
+                //imprimir(pQueue);
                 if(candidates.size()!=0){ //identificar si tiene o no elementos;
                     KNNElementQueue obj= candidates.top();
-                    
                     dist=obj.getDistance();
                 }
                 if((candidates.size()==k)&&(tmp.getDistance() >=dist)){

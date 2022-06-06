@@ -20,8 +20,12 @@ class Rectangle{
     
     public:
 
+
+
         Rectangle(){};//constructor default, no se va usar, pero es para solucionar errores relacionados
 
+        ~Rectangle(){};
+            
         Rectangle(Point *S, Point *T){
             this->S=S;
             this->T=T;

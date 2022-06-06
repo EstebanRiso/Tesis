@@ -6,7 +6,6 @@
 
 
 int main(int argc, char * argv[]){
-    cout<<"iniciando"<<endl;
 	MREP * rep = loadRepresentation2(argv[1]);
 
     K2Tree k2=K2Tree(rep);
@@ -16,7 +15,6 @@ int main(int argc, char * argv[]){
     uint coord_x=atoi(argv[4]);
     uint coord_y=atoi(argv[3]);
 
-    cout<<"aqui estoy"<<endl;
 
 	auto start = std::chrono::high_resolution_clock::now(); 
     priority_queue<KNNElementQueue,vector<KNNElementQueue>,MAXHEAP> resultado=knn.findNNQ(k_vecinos,Point(coord_x,coord_y));
