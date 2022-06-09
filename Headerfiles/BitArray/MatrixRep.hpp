@@ -305,7 +305,7 @@ MREPCR * compactCreateKTree(uint * xedges, uint *yedges, uint numberOfNodes,ulon
 			
 			for(z=offsetL;z<offsetR-1;z++)
 				if(tedges[z].kval>tedges[z+1].kval){
-					fprintf(stderr,"error: %d\n",z);
+					fprintf(stderr,"error aqui: %d\n",z);
 					exit(-1);
 				}
 			q = (QUEUEOFFCONS *)RemoveItemOFFCONS(q);
@@ -340,11 +340,7 @@ MREPCR * compactCreateKTree(uint * xedges, uint *yedges, uint numberOfNodes,ulon
 				bitset(bits_BTL,postotal);
 			}
 			postotal++;
-			
-			if(counterK[j]>1){
-				fprintf(stderr,"error\n");
-				exit(-1);
-			}
+		
 		}
 		q = (QUEUEOFFCONS *)RemoveItemOFFCONS(q);
 	}

@@ -34,8 +34,9 @@ class KNN{
             return  Point(q.getY(),abs(q.getX() - K2TREE->getNodes()) + 1);
         }
 
-        bool isCandidate(uint k, int minD){
-           int dist=0;
+        bool isCandidate(uint k, int64_t minD){
+           
+           int64_t dist=0;
         
            KNNElementQueue objs=candidates.top();
            dist=objs.getDistance();
@@ -100,11 +101,11 @@ class KNN{
         }
 
 
-        uint minDist( Point p, Rectangle R){
+        int64_t minDist( Point p, Rectangle R){
 
 
-            int R1=0;
-            int R2=0;
+            int64_t R1=0;
+            int64_t R2=0;
        
             if(R.Contains(p)){
                 return 0;
@@ -130,11 +131,10 @@ class KNN{
             }
 
             cantDistanceCalculation++;
-            int value1 = p.getX() - R1;
-            int value2 = p.getY() - R2;
+            int64_t value1 = p.getX() - R1;
+            int64_t value2 = p.getY() - R2;
 
-            int resultado=abs(value1*value1)+ abs(value2*value2);
-            return (int) abs(value1*value1)+ abs(value2*value2);
+            return llabs(value1*value1)+ llabs(value2*value2);
         }
 
 
