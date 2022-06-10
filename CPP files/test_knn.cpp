@@ -4,7 +4,7 @@
 #include "../Headerfiles/k2tree/Knn.hpp"
 
 
-string generate_bitarray(MREP* rep){
+/*string generate_bitarray(MREP* rep){
 
   string arr;  
 
@@ -17,14 +17,14 @@ string generate_bitarray(MREP* rep){
     } 
 
     return arr;
-}
+}*/
 
 
 int main(int argc, char * argv[]){
 	MREP * rep = loadRepresentation2(argv[1]);
-    string bitarray=generate_bitarray(rep); 
+    //string bitarray=generate_bitarray(rep); 
 
-    K2Tree k2=K2Tree(rep,bitarray);
+    K2Tree k2=K2Tree(rep);
     KNN knn=KNN(&k2);
 
     uint k_vecinos=atoi(argv[2]);

@@ -73,7 +73,7 @@ class KNN{
                     accumX=S.getX();
                 }
 
-                if(bitarray.at(posHijo)!='0'){
+                if(isBitSet2(TL,posHijo)!=0){
                     temp= Rectangle(new Point(accumX,accumY),new Point(accumX+secuence,accumY+secuence));
                     
                     if(!traspaso){

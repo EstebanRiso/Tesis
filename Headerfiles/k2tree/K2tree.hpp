@@ -24,6 +24,11 @@ class K2Tree{
       this->bitarray=bitarray;
     }
 
+     K2Tree(MREP *a){
+      tl=a;
+    }
+
+
     string get_StringBitarray(){
         return bitarray;     
     }
