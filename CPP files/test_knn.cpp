@@ -57,8 +57,9 @@ int main(int argc, char * argv[]){
 
 	cout<<"cantidad nodos"<<k2.getNodes()<<endl;
   
-    long double time_elapsed_ms=1000.0*(c_end-c_start)/CLOCKS_PER_SEC;
-    cout<< "tiempo usado CPU: "<< time_elapsed_ms<<" ms"<<endl;
+    long double time_elapsed_ns=1000.0*(c_end-c_start)/CLOCKS_PER_SEC;
+    time_elapsed_ns=time_elapsed_ns*1000000.0;
+    cout<< "tiempo usado CPU: "<< time_elapsed_ns<<" ns"<<endl;
 
     
     cout <<"Tiempo usado WallTime: "<<std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count() << "ns\n";
