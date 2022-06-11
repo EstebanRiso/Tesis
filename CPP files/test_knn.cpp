@@ -33,7 +33,9 @@ int main(int argc, char * argv[]){
 
 
 	auto start = std::chrono::high_resolution_clock::now(); 
+    clock_t c_start=clock();
     priority_queue<KNNElementQueue,vector<KNNElementQueue>,MAXHEAP> resultado=knn.findNNQ(k_vecinos,Point(coord_x,coord_y));
+    clock_t c_end=clock();
     auto finish = std::chrono::high_resolution_clock::now();
     priority_queue<KNNElementQueue,vector<KNNElementQueue>,MAXHEAP> resultado2=resultado;
 
@@ -48,15 +50,18 @@ int main(int argc, char * argv[]){
     while(!resultado.empty()){
         KNNElementQueue a =resultado.top();
         cout <<"X:"<<a.getCuadrant().getS().getX()<< " ";
-        cout <<"Y:"<<a.getCuadrant().getS().getY()<< " ";
+        cout <<"Y:"<<k2.getNodes()-a.getCuadrant().getS().getY()<< " ";
         cout<<endl;
         resultado.pop();
     }
 
 	cout<<"cantidad nodos"<<k2.getNodes()<<endl;
-    
+  
+    long double time_elapsed_ms=1000.0*(c_end-c_start)/CLOCKS_PER_SEC;
+    cout<< "tiempo usado CPU: "<< time_elapsed_ms<<" ms"<<endl;
 
-    cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count() << "ns\n";
+    
+    cout <<"Tiempo usado WallTime: "<<std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count() << "ns\n";
 	cout<<"fin del programa"<<endl;    
 
 
