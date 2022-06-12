@@ -5,22 +5,8 @@
 #include <numeric>
 
 
-/*string generate_bitarray(MREP* rep){
 
-  string arr;  
-
-    for(int i=0;i<rep->btl_len;i++){
-        if(isBitSet2(rep->btl,i)!=0){
-            arr+="1";
-        }else{
-            arr+="0";
-        }
-    } 
-
-    return arr;
-}*/
-void splitString(string str, string delimiter,vector<pair<int,int>> &query_points)
-{
+void splitString(string str, string delimiter,vector<pair<int,int>> &query_points){
     int start = 0;
     int end = str.find(delimiter);
     vector<string> acum;
@@ -36,6 +22,24 @@ void splitString(string str, string delimiter,vector<pair<int,int>> &query_point
 }
 
 
+void escritura_resultados(fstream &fila,int numero_vecinos,string archivo,string query_set,priority_queue<KNNElementQueue,vector<KNNElementQueue>,MAXHEAP> resultados,int nodes,int x, int y){
+    
+    string vecinos=to_string(numero_vecinos);
+
+    if(fila.is_open()){
+        fila<<"los resultados de la consulta de n° vecinos "+vecinos+" del dataset: "+archivo+" de los puntos: x="+to_string(x)+" y="+to_string(y)+"\n"; 
+            while(!resultados.empty()){
+            KNNElementQueue a =resultados.top();
+            fila<<a.getCuadrant().getS().getX()<<" "<<nodes-a.getCuadrant().getS().getY()<<"\n";
+            resultados.pop();
+        }
+
+    }
+    else{
+        cout<<"error"<<endl;
+    }
+
+}
 
 
 vector<pair <int,int> > lectura_query(string query){
@@ -43,6 +47,7 @@ vector<pair <int,int> > lectura_query(string query){
     vector<pair<int,int>> query_points;
     fstream newfile;
     string direccion="../Pruebas/Query_Point/"+query+".txt";
+    
     
     newfile.open(direccion,ios::in); 
     if (newfile.is_open()){ 
@@ -58,10 +63,12 @@ vector<pair <int,int> > lectura_query(string query){
 
 
 int main(int argc, char * argv[]){
+
 	MREP * rep = loadRepresentation2(argv[1]);
     //string bitarray=generate_bitarray(rep); 
+    char* dataset=argv[1];
+    string archive=dataset;
 
-    
     uint k_vecinos=atoi(argv[2]);
     long double acum_tiempo_CPU=0;
 
@@ -70,19 +77,21 @@ int main(int argc, char * argv[]){
     char *dir=argv[3];
     string query=dir;
     vector<pair<int,int>> query_points=lectura_query(query);
-    
+    string direccion="../Pruebas/Resultados/resultado_vecinos_"+to_string(k_vecinos)+"_archivo_"+archive+"_queryset_"+query+".txt";
+    fstream newfile;
+    newfile.open(direccion,ios::out|ios::binary|ios::trunc);
 
     while(!query_points.empty()){
         K2Tree k2=K2Tree(rep);
         KNN knn=KNN(&k2);
 	    auto start = std::chrono::high_resolution_clock::now(); 
         clock_t c_start=clock();
-        priority_queue<KNNElementQueue,vector<KNNElementQueue>,MAXHEAP> resultado=knn.findNNQ(k_vecinos,Point(query_points.back().first,query_points.back().second));
+        priority_queue<KNNElementQueue,vector<KNNElementQueue>,MAXHEAP> resultado=knn.findNNQ(k_vecinos,Point(query_points.back().second,query_points.back().first));
         clock_t c_end=clock();
         auto finish = std::chrono::high_resolution_clock::now();
-        priority_queue<KNNElementQueue,vector<KNNElementQueue>,MAXHEAP> resultado2=resultado;
 
-
+        escritura_resultados(newfile,k_vecinos,dataset,query,resultado,k2.getNodes(),query_points.back().first, query_points.back().second);
+        
 
         long double time_elapsed_ns=1000.0*(c_end-c_start)/CLOCKS_PER_SEC;
         time_elapsed_ns=time_elapsed_ns*1000000.0;
